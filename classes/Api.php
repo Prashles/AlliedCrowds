@@ -10,25 +10,30 @@ class Api {
 	/**
 	 * @var string
 	 */
-	protected $baseURL = 'https://api.globalgiving.org/api/';
+	protected $baseURL = 'https://api.globalgiving.org/api';
 
 	/**
-	 * Rate limit for the API
+	 * Rate limit for the API (requests per minute)
 	 * 
 	 * @var integer
 	 */
 	private $rateLimit = 0;
 
-
-	public function getProjects($nextID = false)
+	/**
+	 * Get projects
+	 * 
+	 * @param  int $nextID
+	 * @return string
+	 */
+	public function getProjects($nextID = 0)
 	{
-		if ($nextID !== false) {
+		$operation = '/public/projectservice/all/projects';
 
+		$url = "{$this->baseURL}{$operation}?api_key=$this->key";
+
+		if ($nextID === 0) {
+			$url .= "&nextProjectId={$nextID}";
 		}
-
-		$op = 'public/projectservice/all/projects';
-
-		$url = $this->baseURL . $op . '?api_key=' . $this->key;
 
 		return $this->request($url);
 	}
@@ -43,18 +48,6 @@ class Api {
 	 */
 	public function request($url)
 	{	
-		/* TAKEN FROM API DOCS, RECODE IN CURL */
-
-		/*$opts = array(
-		  'http'=>array(
-		    'method'=>"GET",
-		    'header'=>"Accept: application/json\r\n"
-		  )
-		);
-		
-		$output = file_get_contents($url, false, $context);
-		return  $output;*/
-
 		$ch = curl_init($url);
 
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -63,10 +56,12 @@ class Api {
 
 		$output = json_decode(curl_exec($ch));
 
+		// Invalid HTTP code
 		if (curl_getinfo($ch, CURLINFO_HTTP_CODE) != 200) {
 			throw new Exception('Could not retrieve data from API');
 		} 
 
+		// json_decode returns null for JSON that is encoded incorrectly
 		if ($output === null) {
 			throw new Exception('Invalid response from API');
 		}
