@@ -11,7 +11,7 @@ class Projects {
 
 	public __construct()
 	{
-		$this->db = (new Database->getConnection();
+		$this->db = (new Database)->getConnection();
 	}
 
 

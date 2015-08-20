@@ -25,7 +25,7 @@ class Database {
 	 *
 	 * @return PDO
 	 */
-	public fuction getConnection()
+	public function getConnection()
 	{
 		return $this->connection;
 	}

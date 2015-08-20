@@ -6,7 +6,7 @@ class Api {
 	 * Rate limit for API (requests per minute)
 	 * 0 = unlimited
 	 */
-	const RATE_LIMIT = 0;
+	const RATE_LIMIT = 5;
 
 	/**
 	 * @var string
@@ -26,7 +26,7 @@ class Api {
 	 */
 	public function getProjects($nextID = 0)
 	{
-		$operation = '/public/projectservice/all/projects/summary'; // NOTE: only retrieving summary for the sample application
+		$operation = '/public/projectservice/all/projects/active/summary'; // NOTE: only retrieving summary for the sample application
 
 		$url = "{$this->baseURL}{$operation}?api_key=$this->key";
 

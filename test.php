@@ -1,10 +1,12 @@
 <pre>
 <?php
 
+require 'classes/Updater.php';
 require 'classes/Api.php';
 
-$p = new Api;
+$t = new Updater(new Api);
+$t->run();
 
-var_dump($p->getProjects());
 ?>
+
 </pre>
