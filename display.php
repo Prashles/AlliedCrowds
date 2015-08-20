@@ -3,7 +3,13 @@
 require 'controllers/Projects.php';
 
 $projectsController = new Projects;
-$projects = $projectsController->display();
+if (isset($_GET['show']) && $_GET['show'] == 'active') {
+	$projects = $projectsController->display(true);
+}
+else {
+	$projects = $projectsController->display();
+}
+
 
 ?>
 <html>
@@ -31,6 +37,12 @@ $projects = $projectsController->display();
 				</div>
 				<?php endforeach; ?>
 				<div class="clear"></div>
+			</div>
+
+			<div id="sort">
+				<a href="display.php">Show all</a> | <a href="display.php?show=active">Show only active projects</a><br/><br/>
+
+				TODO: Pagination here
 			</div>
 		</div>
 	</body>

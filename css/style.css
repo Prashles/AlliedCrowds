@@ -6,3 +6,4 @@ body{background: #E4E4E4;}
 .project{float: left; width: 195px; height: 350px; padding: 15px; background: #E4E4E4; margin: 10px 20px 0 0;}
 .project ul{list-style-type: none; padding: 0;}
 .project li{margin-top: 7px;}
+#sort{margin-top: 20px; text-align: center;}
