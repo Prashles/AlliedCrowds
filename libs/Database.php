@@ -11,7 +11,7 @@ class Database {
 	public function __construct()
 	{
 		try {
-		    $db = new PDO('mysql:host=localhost;dbname=ac;&charset=utf8', 'root', 'root', [PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+		    $db = new PDO('mysql:host=localhost;dbname=ac;charset=utf8', 'root', 'root', [PDO::ATTR_EMULATE_PREPARES => false, PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
 		    $this->connection = $db;
 

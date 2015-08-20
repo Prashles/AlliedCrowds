@@ -3,6 +3,12 @@
 class Api {
 
 	/**
+	 * Rate limit for API (requests per minute)
+	 * 0 = unlimited
+	 */
+	const RATE_LIMIT = 0;
+
+	/**
 	 * @var string
 	 */
 	private $key = '5251d282-3d26-4afa-ab17-c89c3a9a6ba7';
@@ -13,13 +19,6 @@ class Api {
 	protected $baseURL = 'https://api.globalgiving.org/api';
 
 	/**
-	 * Rate limit for the API (requests per minute)
-	 * 
-	 * @var integer
-	 */
-	private $rateLimit = 0;
-
-	/**
 	 * Get projects
 	 * 
 	 * @param  int $nextID
@@ -27,11 +26,11 @@ class Api {
 	 */
 	public function getProjects($nextID = 0)
 	{
-		$operation = '/public/projectservice/all/projects';
+		$operation = '/public/projectservice/all/projects/summary'; // NOTE: only retrieving summary for the sample application
 
 		$url = "{$this->baseURL}{$operation}?api_key=$this->key";
 
-		if ($nextID === 0) {
+		if ($nextID !== 0) {
 			$url .= "&nextProjectId={$nextID}";
 		}
 
