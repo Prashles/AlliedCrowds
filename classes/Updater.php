@@ -69,11 +69,19 @@ class Updater {
 
 				// Loop through all projects
 				foreach ($projects->projects->project as $project) {
-					//$insert = $that->db->prepare('INSERT INTO projects_test (api_id) VALUES (?) ON DUPLICATE KEY UPDATE updated = 1');
 					$insert = $that->db->prepare('INSERT INTO projects
-						(api_id, title, summary, organisation_name, country, url, image_url, mission, active, last_updated )')
+						(api_id, title, summary, organisation_name, country, url, image_url,
+						 active, last_updated )
+						VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+						ON DUPLICATE KEY UPDATE
+						title = ?, summary = ?, organisation_name = ?, country = ?, url = ?, image_url = ?,
+						active = ?, last_updated = NOW()');
 
-					$insert->execute([$project->id]);
+					$insert->execute([$project->id, $project->title, $project->summary,
+						$project->organization->name, $project->country, $project->organization->url,
+						$project->imageLink, (int) $project->active, $project->title,
+						$project->summary, $project->organization->name, $project->country,
+						$project->organization->url, $project->imageLink, (int) $project->active]);
 				}
 				// Update the last request
 				$that->lastRequest->has_next = $projects->projects->hasNext;
