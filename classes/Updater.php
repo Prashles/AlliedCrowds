@@ -1,8 +1,6 @@
 <?php
 
- 
 require __DIR__ . '/../libs/Database.php';
-
 
 class Updater {
 
@@ -56,20 +54,28 @@ class Updater {
 	 */
 	public function run()
 	{
+		// Max run time for the script is X seconds, to ensure it doesn't run over another instance
 		while (time() < $this->startTime + 10) {
+
+			// Way to access $this inside of anonymous function
 			$that = $this;
 			$this->rate(function() use ($that)
 			{
+				// Set id to start from, 0 if no more 
 				$id = (!$that->lastRequest || !$that->lastRequest->has_next) ? 0 : $that->lastRequest->next_project_id;
 
+				// Get projects from API
 				$projects = $that->api->getProjects($id);
 
+				// Loop through all projects
 				foreach ($projects->projects->project as $project) {
-
-					$insert = $that->db->prepare('INSERT INTO projects_test (api_id) VALUES (?) ON DUPLICATE KEY UPDATE updated = 1');
+					//$insert = $that->db->prepare('INSERT INTO projects_test (api_id) VALUES (?) ON DUPLICATE KEY UPDATE updated = 1');
+					$insert = $that->db->prepare('INSERT INTO projects
+						(api_id, title, summary, organisation_name, country, url, image_url, mission, active, last_updated )')
 
 					$insert->execute([$project->id]);
 				}
+				// Update the last request
 				$that->lastRequest->has_next = $projects->projects->hasNext;
 				$that->lastRequest->next_project_id = $projects->projects->nextProjectId;
 
@@ -89,6 +95,7 @@ class Updater {
 	 */
 	protected function rate(Closure $method, $rateLimit)
 	{
+		// Check if rate limited
 		if ($rateLimit === 0 || $this->actions < $rateLimit) {
 			$this->currentRequest = $method();
 			$this->actions++;
@@ -117,20 +124,3 @@ class Updater {
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

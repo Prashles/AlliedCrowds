@@ -40,10 +40,9 @@ class Api {
 	/**
 	 * Make a request to the API
 	 *
-	 * @var  string  $operation
-	 * @var  string  $url
-	 * 
-	 * @return array
+	 * @param  string $url
+	 * @return object
+	 * @throws Exception
 	 */
 	public function request($url)
 	{	
