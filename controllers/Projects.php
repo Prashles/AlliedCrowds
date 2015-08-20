@@ -1,6 +1,6 @@
 <?php
 
-require 'libs/Database.php';
+require __DIR__ . '/../libs/Database.php';
 
 class Projects {
 
@@ -12,6 +12,13 @@ class Projects {
 	public function __construct()
 	{
 		$this->db = (new Database)->getConnection();
+	}
+
+	public function display()
+	{
+		$get = $this->db->query('SELECT * FROM projects LIMIT 9');
+
+		return $get->fetchAll(PDO::FETCH_OBJ);
 	}
 
 
